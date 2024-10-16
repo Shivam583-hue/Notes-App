@@ -72,12 +72,12 @@ app.put('/api/notes', (async (req : Request, res: Response) => {
         return res.status(500).json({ message: "Server error" });
     }
 })as express.RequestHandler);
+
 // Delete
 app.delete('/api/notes', (async (req:Request, res:Response) => {
     if (!req.body._id) {
         return res.status(400).json({ msg: "_id is required." });
     }
-
     try {
         const deletedNotes = await NotesModel.deleteOne({ _id: req.body._id });
 
