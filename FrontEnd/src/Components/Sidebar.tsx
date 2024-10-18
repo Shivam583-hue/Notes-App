@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.png';
-import Categories from './Categories';
-import axios from 'axios';
+import React,{useEffect,useState} from 'react';
 import { Link } from 'react-router-dom';
+import logo from './logo.png';
+import axios from 'axios';
 
 interface Note {
-    category: string;
-    title: string;
-    description: string; 
+  _id: string;
+  title: string;
+  description: string;
+  category: string;
 }
 
-function Sidebar() {
+interface SidebarProps {
+  notes: Note[];
+}
+
+
+function Sidebar({ notes }: SidebarProps){
     const [categs, setCategs] = useState<Note[]>([]);
 
     useEffect(() => {
@@ -23,7 +28,7 @@ function Sidebar() {
             }
         };
 
-        fetchNotes();
+        setTimeout(fetchNotes, 500);
     }, []);
 
     return (
@@ -46,17 +51,21 @@ function Sidebar() {
                 <Link to="/CreateNote" className='text-[#B39C8E] underline font-mono font-semibold text-2xl hover:text-[#9B7A6A]'>Create Note</Link>
             </div>
             <div className='pl-6 pt-[20px] pb-[20px]'>
-                <h3 className='text-gray-400 font-mono font-semibold text-2xl'>⦿ Your Notes</h3>
+            <h3 className='text-gray-400 font-mono font-semibold text-2xl'>⦿ Your Notes</h3>
             </div>
-            <div>
-                <div>
-                    {/* {categs.map((item) => (
-                        <Categories categs={item.category}/>
-                    ))} */}
-                </div>
+            <div className='pl-7 pt-2 cursor-pointer'>
+                {notes.map((note) => (
+                    <Link 
+                        key={note._id} 
+                        to={`/note/${note.title}`}
+                        className='block pl-6 py-2 text-[#009378]  hover:text-[#176f5e] font-mono'
+                        >
+                        ‣{note.category}
+                    </Link>
+                ))}
             </div>
-        </div>
-    );
+    </div>
+  );
 }
 
 export default Sidebar;
